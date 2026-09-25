@@ -7,22 +7,31 @@ description: Create clean, verified flowcharts and process diagrams. Generates b
 
 Use this skill whenever you need to map out execution flow, algorithms, state transitions, or decision trees.
 
-## 1. Fast Inline Mermaid Flowchart (Default)
-Generate clean, readable Mermaid syntax using appropriate node shapes:
-- `([Start / End])` — Pill shapes for boundaries.
-- `[Process / Action]` — Rectangles for computational steps.
-- `{"Decision ?"}` — Rhombus/diamond for conditional branching.
-- `[(Database / Storage)]` — Cylinders for storage.
-- `-->|Yes / No|` — Labeled transition edges.
+## 1. Worktree-Aware File Placement
 
-## 2. Exporting to draw.io (diagrams.net)
-Mermaid flowcharts are natively editable in draw.io:
-1. Open draw.io (or app.diagrams.net).
-2. Click **`+` (Insert) → Advanced → Mermaid** (or Arrange → Insert → Advanced → Mermaid).
-3. Paste the generated Mermaid code and click **Insert**.
-4. All shapes and arrows become native, draggable, fully editable draw.io vector components.
+When asked to generate or save a flowchart, the agent MUST place files into the **current active worktree / repository**:
+* **Target Directory:** `./docs/diagrams/` relative to the current working directory (`pwd`).
+* **Files Generated:**
+  1. `<name>.drawio` — Native draw.io XML file, directly openable in draw.io without copy-pasting.
+  2. `<name>.mmd` — Plain text Mermaid source code.
+* **Why:** In Git worktrees (`wt`), saving to `./docs/diagrams/` ensures the diagram stays strictly isolated on that feature branch, ready to be committed and reviewed in your Pull Request (`/pr`) without polluting other worktrees.
 
-## 3. Exporting to JPG / PNG / SVG
-- **Via /archify:** Generates standalone HTML with built-in **Export → JPEG / PNG / SVG** buttons in the toolbar.
-- **Via draw.io:** Once pasted in draw.io, click **File → Export as → JPEG**.
-- **Via CLI:** Run `npx -y @mermaid-js/mermaid-cli -i chart.mmd -o chart.jpg`.
+## 2. In-Chat Output Standards
+
+The agent MUST always provide:
+1. The **Visual Mermaid diagram** rendered directly in the response.
+2. A **Plain-text code block (` ```text `)** containing the raw Mermaid code with an accessible Copy button.
+3. The **Clickable file link** to the generated `./docs/diagrams/<name>.drawio` file.
+
+## 3. Standard Node Shapes
+* `([Start / End])` — Pill shapes for boundaries.
+* `[/ Input or Output /]` — Parallelograms for reading/writing variables or sensor data.
+* `[Process / Action]` — Rectangles for computational steps.
+* `{"Decision ?"}` — Rhombus/diamond for conditional branching.
+* `[(Database / Storage)]` — Cylinders for storage.
+* `-->|Yes / No|` — Labeled transition edges.
+
+## 4. Exporting to draw.io and JPG
+* **Open File:** In draw.io, simply open `./docs/diagrams/<name>.drawio` (File → Open From → Device).
+* **Copy/Paste:** In draw.io, click **`+` (Insert) → Advanced → Mermaid**, paste the raw text, and click **Insert**.
+* **JPG Export:** Inside draw.io, click **File → Export as → JPEG**.
