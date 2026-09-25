@@ -27,6 +27,8 @@ Directly accessible in the Antigravity chat input via `/`:
 | **`/test`** | TDD Scaffold | Scaffolds failing unit/integration tests in `tests/` *before* touching code. |
 | **`/build`** | Implementation | Minimal, scoped implementation strictly turning failing tests green. |
 | **`/review`** | Self-Audit | Audits git diffs for null safety, memory leaks, security, and race conditions. |
+| **`/ship`** | Release Gate | Runs tests, verifies cleanliness, commits, pushes, and opens PR. |
+| **`/pr`** | GitHub PR | Creates feature branch, pushes, and opens a structured PR via `gh pr create`. |
 | **`/engineering-lifecycle`** | Full SDLC | Executes the end-to-end disciplined cycle (`/spec` → `/plan` → `/test` → `/build` → `/review`). |
 | **`/terse-action`** | Format Style | Strips conversational filler; enforces numbered steps, time estimates, and diffs. |
 | **`/archify`** | Architecture | Generates interactive, motion-enabled, explorable HTML architecture & dataflow diagrams. |

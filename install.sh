@@ -117,6 +117,8 @@ echo -e "  ${BOLD}/plan${NC}                 — Milestone planning with exit cr
 echo -e "  ${BOLD}/test${NC}                 — Test-driven development scaffold"
 echo -e "  ${BOLD}/build${NC}                — Scoped implementation"
 echo -e "  ${BOLD}/review${NC}               — Security and concurrency self-audit"
+echo -e "  ${BOLD}/ship${NC}                 — Pre-flight test verification, commit, push & PR"
+echo -e "  ${BOLD}/pr${NC}                   — Automated GitHub Pull Request creation"
 echo -e "  ${BOLD}/engineering-lifecycle${NC}— End-to-end disciplined SDLC workflow"
 echo -e "  ${BOLD}/terse-action${NC}         — Token-efficient, action-first output"
 echo -e "  ${BOLD}/archify${NC}              — Interactive system & dataflow architecture diagrams"
