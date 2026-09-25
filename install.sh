@@ -122,5 +122,6 @@ echo -e "  ${BOLD}/pr${NC}                   — Automated GitHub Pull Request c
 echo -e "  ${BOLD}/engineering-lifecycle${NC}— End-to-end disciplined SDLC workflow"
 echo -e "  ${BOLD}/terse-action${NC}         — Token-efficient, action-first output"
 echo -e "  ${BOLD}/archify${NC}              — Interactive system & dataflow architecture diagrams"
+echo -e "  ${BOLD}/flowchart${NC}            — Clean process, logic, and decision flowcharts"
 echo -e "  ${BOLD}/context-mode${NC}         — Sandbox tool outputs to prevent context rot (98% savings)"
 echo -e "  ${BOLD}Memory MCP${NC}            — Persistent Knowledge Graph active\n"

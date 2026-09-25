@@ -32,6 +32,7 @@ Directly accessible in the Antigravity chat input via `/`:
 | **`/engineering-lifecycle`** | Full SDLC | Executes the end-to-end disciplined cycle (`/spec` → `/plan` → `/test` → `/build` → `/review`). |
 | **`/terse-action`** | Format Style | Strips conversational filler; enforces numbered steps, time estimates, and diffs. |
 | **`/archify`** | Architecture | Generates interactive, motion-enabled, explorable HTML architecture & dataflow diagrams. |
+| **`/flowchart`** | Diagram | Generates clean process flowcharts, decision trees, and logic flows. |
 | **`/context-mode`** | Context Shield | Sandboxes file reads and tool executions into an SQLite/FTS5 store, cutting token waste by up to 98% on large codebases. |
 
 ### 2. Global Engineering Rules (`~/.gemini/config/GEMINI.md`)
