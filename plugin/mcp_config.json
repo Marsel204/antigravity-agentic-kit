@@ -6,6 +6,13 @@
         "-y",
         "@modelcontextprotocol/server-memory"
       ]
+    },
+    "context-mode": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "context-mode"
+      ]
     }
   }
 }

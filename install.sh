@@ -72,9 +72,13 @@ data["mcpServers"]["memory"] = {
     "command": "npx",
     "args": ["-y", "@modelcontextprotocol/server-memory"]
 }
+data["mcpServers"]["context-mode"] = {
+    "command": "npx",
+    "args": ["-y", "context-mode"]
+}
 
 cfg_path.write_text(json.dumps(data, indent=2) + "\n")
-print("  -> Registered '@modelcontextprotocol/server-memory'")
+print("  -> Registered '@modelcontextprotocol/server-memory' and 'context-mode'")
 PYEOF
 
 # 6. Check / Install Worktrunk (wt)
@@ -115,4 +119,6 @@ echo -e "  ${BOLD}/build${NC}                — Scoped implementation"
 echo -e "  ${BOLD}/review${NC}               — Security and concurrency self-audit"
 echo -e "  ${BOLD}/engineering-lifecycle${NC}— End-to-end disciplined SDLC workflow"
 echo -e "  ${BOLD}/terse-action${NC}         — Token-efficient, action-first output"
+echo -e "  ${BOLD}/archify${NC}              — Interactive system & dataflow architecture diagrams"
+echo -e "  ${BOLD}/context-mode${NC}         — Sandbox tool outputs to prevent context rot (98% savings)"
 echo -e "  ${BOLD}Memory MCP${NC}            — Persistent Knowledge Graph active\n"

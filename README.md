@@ -1,6 +1,6 @@
 # Antigravity Agentic Engineering Kit
 
-> High-discipline Software Development Life Cycle (SDLC) skills, TDD enforcement, token-efficient action formatting, persistent knowledge-graph memory, and parallel Git worktree management for **Google Antigravity**.
+> High-discipline Software Development Life Cycle (SDLC) skills, TDD enforcement, token-efficient action formatting, interactive architecture generation (`archify`), large-codebase context sandboxing (`context-mode`), persistent knowledge-graph memory, and parallel Git worktree management for **Google Antigravity**.
 
 ---
 
@@ -29,15 +29,17 @@ Directly accessible in the Antigravity chat input via `/`:
 | **`/review`** | Self-Audit | Audits git diffs for null safety, memory leaks, security, and race conditions. |
 | **`/engineering-lifecycle`** | Full SDLC | Executes the end-to-end disciplined cycle (`/spec` → `/plan` → `/test` → `/build` → `/review`). |
 | **`/terse-action`** | Format Style | Strips conversational filler; enforces numbered steps, time estimates, and diffs. |
+| **`/archify`** | Architecture | Generates interactive, motion-enabled, explorable HTML architecture & dataflow diagrams. |
+| **`/context-mode`** | Context Shield | Sandboxes file reads and tool executions into an SQLite/FTS5 store, cutting token waste by up to 98% on large codebases. |
 
 ### 2. Global Engineering Rules (`~/.gemini/config/GEMINI.md`)
 * **Test-Driven Mandate**: Prohibits touching core logic without verified test coverage.
 * **Token Economy**: Guards against dumping unbounded log files or multi-megabyte datasets into LLM context.
 * **Hardware & Safety Constraints**: Non-blocking serial I/O, bounded memory for edge devices (e.g. Jetson Orin Nano).
 
-### 3. Cross-Session Memory (MCP)
-* Registers `@modelcontextprotocol/server-memory` in `mcp_config.json`.
-* Persists architectural decisions, hardware pinouts, and key constraints across restarts.
+### 3. Cross-Session Memory & Context MCPs
+* **`server-memory`**: Registers `@modelcontextprotocol/server-memory` to persist architectural decisions, hardware pinouts, and key constraints across restarts.
+* **`context-mode`**: Registers `context-mode` to prevent context decay in multi-thousand file repositories.
 
 ### 4. Parallel Worktree Isolation (`worktrunk`)
 * Automates `cargo install worktrunk` to provide the `wt` CLI.
@@ -55,12 +57,17 @@ Directly accessible in the Antigravity chat input via `/`:
 /review
 ```
 
-### B. Persistent Memory
+### B. Interactive System Architecture
 ```text
-Remember this in memory: Kannala-Brandt lens rectifier requires focal length scale of 0.82 for IPM homography.
+/archify map the dataflow pipeline from Kannala-Brandt lens rectifier to Sugeno ANFIS and RS-485 actuation
 ```
 
-### C. Parallel Worktrees (Terminal)
+### C. Large Codebase Context Sandboxing
+```text
+/context-mode find all references to Modbus telemetry and summarize error handling paths
+```
+
+### D. Parallel Worktrees (Terminal)
 ```bash
 wt switch -c new-feature-branch
 wt list
