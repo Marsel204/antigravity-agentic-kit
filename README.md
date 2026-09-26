@@ -25,6 +25,7 @@ Directly accessible in the Antigravity chat input via `/`:
 | **`/spec`** | Specification | Analyzes contracts, edge cases, failure states, and non-blocking I/O budgets. |
 | **`/plan`** | Milestone Plan | Decomposes task into ordered steps with acceptance criteria and rollback plans. |
 | **`/test`** | TDD Scaffold | Scaffolds failing unit/integration tests in `tests/` *before* touching code. |
+| **`/debug`** | Fault Isolation | Systematic root-cause debugging, backward data flow tracing, and hypothesis testing (`obra/superpowers`). |
 | **`/build`** | Implementation | Minimal, scoped implementation strictly turning failing tests green. |
 | **`/review`** | Self-Audit | Audits git diffs for null safety, memory leaks, security, and race conditions. |
 | **`/ship`** | Release Gate | Runs tests, verifies cleanliness, commits, pushes, and opens PR. |
@@ -60,17 +61,22 @@ Directly accessible in the Antigravity chat input via `/`:
 /review
 ```
 
-### B. Interactive System Architecture
+### B. Systematic Root-Cause Debugging
+```text
+/debug solve intermittent segmentation fault in YOLO frame queue
+```
+
+### C. Interactive System Architecture
 ```text
 /archify map the dataflow pipeline from Kannala-Brandt lens rectifier to Sugeno ANFIS and RS-485 actuation
 ```
 
-### C. Large Codebase Context Sandboxing
+### D. Large Codebase Context Sandboxing
 ```text
 /context-mode find all references to Modbus telemetry and summarize error handling paths
 ```
 
-### D. Parallel Worktrees (Terminal)
+### E. Parallel Worktrees (Terminal)
 ```bash
 wt switch -c new-feature-branch
 wt list
