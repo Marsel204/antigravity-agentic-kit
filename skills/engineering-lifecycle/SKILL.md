@@ -8,8 +8,8 @@ description: >-
 
 # High-Discipline Engineering Lifecycle Skill
 
-This skill enforces a structured **Spec → Plan → Test (TDD) → Build → Review → Verify** workflow across all tasks.
-Agents MUST execute each phase sequentially. Do NOT skip ahead to implementation without user approval of the plan and failing tests.
+This skill enforces a structured **Spec → Plan → Test (TDD) → Build → Review → Ship** workflow across all tasks.
+Agents MUST execute each phase sequentially. In interactive sessions, do NOT skip ahead to implementation without user approval of the plan and failing tests. In autonomous sessions (`/goal`, subagents), emit the plan artifact and proceed without deadlock.
 
 ---
 
@@ -25,7 +25,8 @@ Agents MUST execute each phase sequentially. Do NOT skip ahead to implementation
 * **Milestone Decomposition:** Break the task into discrete, independent milestones (1–3 files per milestone).
 * **Acceptance Criteria:** Define exact pass/fail criteria for each milestone.
 * **Rollback Plan:** Ensure changes can be reverted cleanly without side effects.
-* **Exit Criteria:** User explicitly reviews and approves the plan before code is written.
+* **Artifact Output:** Render plan as an artifact with `RequestFeedback: true` in `<appDataDir>/brain/<conversation-id>/`.
+* **Exit Criteria:** User explicitly reviews and approves the plan (via Proceed button or chat). In autonomous mode (`/goal`, subagent), emit the plan artifact and proceed automatically.
 
 ---
 
@@ -51,6 +52,7 @@ Agents MUST execute each phase sequentially. Do NOT skip ahead to implementation
 
 ---
 
-## Phase 6: Release & Verification (/verify)
+## Phase 6: Release & Verification (/ship or /verify)
 * **Full Suite Run:** Run the entire test suite to guarantee zero regression across other components.
+* **Ship Gate:** Verify clean working tree, commit via Conventional Commits, push branch, and open PR via `/ship`. If no remote or `gh` CLI is configured, export a patch or diff summary artifact.
 * **Metrics/Ledger:** For edge or algorithmic systems, record execution latency, memory footprint, or ledger updates.
