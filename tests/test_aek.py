@@ -883,7 +883,7 @@ class InstallationTests(unittest.TestCase):
             with self.assertRaisesRegex(Error, "modified AEK instructions"):
                 install(["codex"], home)
             result = uninstall(home)
-            self.assertIn(str(path), result["preserved_modified_files"])
+            self.assertIn(str(path.resolve()), result["preserved_modified_files"])
             self.assertIn("my extra policy", path.read_text())
 
     def test_enrollment_collision_does_not_partially_write_policy(self):
@@ -952,7 +952,7 @@ class InstallationTests(unittest.TestCase):
             skill.write_text("local edit")
             result = uninstall(home)
             self.assertEqual(skill.read_text(), "local edit")
-            self.assertIn(str(skill), result["preserved_modified_files"])
+            self.assertIn(str(skill.resolve()), result["preserved_modified_files"])
 
     def test_existing_identical_file_is_restored_on_uninstall(self):
         from aek.install import SOURCE
