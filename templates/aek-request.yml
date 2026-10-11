@@ -1,0 +1,13 @@
+name: AEK request
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, edited, closed]
+  pull_request_review:
+    types: [submitted, edited, dismissed]
+permissions:
+  contents: read
+jobs:
+  request:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'Request independent verification; this job does not certify anything.'

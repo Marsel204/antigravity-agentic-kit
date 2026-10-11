@@ -1,39 +1,12 @@
 ---
 name: pr
-description: Create, update, or inspect GitHub Pull Requests (PRs). Automates branch verification, pushing to remote, drafting structured PR descriptions, and submitting via GitHub CLI (gh pr create) or GitHub MCP.
+description: Create a reviewable pull request using the project's publishing policy and include current verification evidence.
 ---
 
-# /pr — GitHub Pull Request Automation
+# Pull request
 
-Use this skill to automate opening production-ready GitHub Pull Requests.
+In an AEK-enrolled project, publish through `aek ship` after an exact-commit review and independently approved harness verification. Use a separate test-proposal PR for harness authoring. Publishing uses the configured restricted agent identity and opens a draft; do not bypass its checks by calling GitHub directly with human credentials.
 
-## Execution Steps
+In unenrolled projects, follow their existing checks and publishing conventions. Inspect the final diff, include relevant validation and limitations, and create a PR only when publishing is authorized. Keep multiline bodies in a temporary file and pass `--body-file` to `gh`.
 
-1. **Branch Verification:** Check current branch (`git branch --show-current`).
-   * If on `main` or `master`, create and switch to a descriptive branch:
-     `git checkout -b <type>/<short-description>` (e.g., `feat/emergency-vehicle-preemption`, `fix/serial-timeout`).
-2. **Commit Uncommitted Work:** If uncommitted changes exist, stage and commit them using Conventional Commits (`feat: ...`, `fix: ...`, `refactor: ...`).
-3. **Push to Remote:** Push the branch to origin:
-   `git push -u origin <branch>`
-4. **Author Structured PR Description:**
-   * **Title:** Concise `<type>(<scope>): <summary>` (e.g., `feat(atsc): add emergency vehicle preemption detection`).
-   * **Body Format:**
-     ```markdown
-     ## Summary
-     Brief 2-3 sentence overview of why this change is needed and what it accomplishes.
-
-     ## Changes
-     - Detailed list of modified modules and new capabilities.
-
-     ## Verification & Testing
-     - Test runner executed (`pytest`, `npm test`, etc.) with output status.
-     - Confirmation of zero regressions.
-
-     ## Checklist
-     - [x] Unit/Integration tests passing
-     - [x] Non-blocking I/O & safety constraints verified
-     - [x] Documentation & types updated
-     ```
-5. **Submit via GitHub CLI:**
-   Execute `gh pr create --title "<title>" --body "<body>"` (or use GitHub MCP).
-6. **Return URL:** Display the clickable PR link: `[PR #X](https://github.com/...)`.
+Return the created PR link. Do not merge or deploy unless separately requested.

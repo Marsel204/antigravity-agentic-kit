@@ -1,0 +1,5 @@
+recursive-include scripts *.py
+recursive-include templates *.yml
+recursive-include skills *
+global-exclude *.pyc
+global-exclude __pycache__

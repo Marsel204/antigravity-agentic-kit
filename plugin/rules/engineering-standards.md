@@ -1,14 +1,11 @@
-# Global Engineering & Quality Standards
+# Engineering rules
 
-## 1. Test-Driven Development (TDD) Mandate
-- Before modifying core business logic, algorithms, or fixing reported bugs, check for or create corresponding test cases in `tests/`.
-- Ensure tests fail initially when testing a bug fix or new requirement before writing implementation code.
-- Always run the project's test runner (`pytest`, `npm test`, `cargo test`, etc.) to confirm tests pass with zero regressions.
+In AEK-enrolled projects, load architecture/task context at start, resume, compaction, and worktree changes. Preserve the exact approved harness and architecture boundaries. Propose changes in a separate workspace and obtain human approval; local exception flags and editable state files provide no approval authority.
 
-## 2. Context Window & Token Efficiency
-- Do not execute commands that dump unbounded stdout into the context window (e.g., raw `cat` on large datasets, `git log` without `-n`, or unfocused test logs).
-- Use focused queries, specific grep patterns, or piped heads/tails to inspect logs.
+Verify the committed implementation with configured required checks. Missing, skipped, timed-out, or stale checks are not success. Inspect source references before trusting graph relationships, and refresh stale indexes.
 
-## 3. High-Discipline Action Protocol
-- Eliminate conversational pleasantries, filler phrases, and restating the prompt.
-- Structure updates into numbered milestones, concrete diffs, and explicit verification statuses.
+Launch parallel agents only when requested. Keep task state separate by worktree and resolve shared interface ownership explicitly.
+
+Publishing uses the restricted agent identity and creates a draft PR. Independent CI controls the merge gate. Merging and deployment require a separate request.
+
+For unenrolled projects, respect existing instructions and do not claim AEK protection. Keep logs and retrieved context focused on the current task.
