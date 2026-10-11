@@ -117,25 +117,24 @@ def restore(root, source, config):
         if os.name != "nt":
             path.chmod(0o755 if wanted[name]["mode"] == "100755" else 0o644)
     if paths:
-        payload = b"".join(os.fsencode(":(literal)" + p) + b"\0" for p in paths)
-        git(
-            root,
-            "add",
-            "--all",
-            "--force",
-            "--pathspec-from-file=-",
-            "--pathspec-file-nul",
-            input=payload,
+        # Reuse approved object IDs directly. git add could run clean filters or
+        # normalize a restored CRLF blob, especially when its index entry was deleted.
+        approved_entries = {}
+        for record in git(root, "ls-tree", "-r", "-z", source).stdout.split(b"\0"):
+            if not record:
+                continue
+            meta, raw_name = record.split(b"\t", 1)
+            mode, kind, blob = meta.split()
+            name = os.fsdecode(raw_name)
+            if name in wanted:
+                approved_entries[name] = mode + b" " + blob + b"\t" + raw_name + b"\0"
+        payload = b"".join(
+            approved_entries.get(
+                name, b"0 " + b"0" * 40 + b"\t" + os.fsencode(name) + b"\0"
+            )
+            for name in paths
         )
-        if os.name == "nt":
-            for name, meta in wanted.items():
-                git(
-                    root,
-                    "update-index",
-                    "--chmod=" + ("+x" if meta["mode"] == "100755" else "-x"),
-                    "--",
-                    name,
-                )
+        git(root, "update-index", "-z", "--index-info", input=payload)
 
 
 def verify(

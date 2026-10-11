@@ -14,17 +14,17 @@ from .context import context
 
 def blocked_paths(root, paths, config):
     blocked = []
+    bases = [Path(os.path.abspath(root)), root.resolve()]
     for name in paths:
         # Both lexical path and resolved target matter for symlink aliases.
         path = Path(name) if Path(name).is_absolute() else root / name
-        for candidate in [Path(os.path.abspath(path)), path.resolve()]:
-            try:
-                relative = candidate.relative_to(root).as_posix()
-            except ValueError:
-                continue
-            if policy.protected(relative, config):
-                blocked.append(name)
-                break
+        if any(
+            candidate.is_relative_to(base)
+            and policy.protected(candidate.relative_to(base).as_posix(), config)
+            for candidate in [Path(os.path.abspath(path)), path.resolve()]
+            for base in bases
+        ):
+            blocked.append(name)
     return blocked
 
 

@@ -75,7 +75,7 @@ class RepoCase(unittest.TestCase):
     def write(self, name, text):
         path = self.root / name
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(text, encoding="utf-8")
+        path.write_text(text, encoding="utf-8", newline="\n")
         return path
 
     def save(self):
@@ -206,6 +206,22 @@ class HarnessTests(RepoCase):
         self.assertIn(".aek/ci/aek/ci.py", result["tampered_paths"])
         self.assertEqual(result["checks"][0]["status"], "passed")
 
+    def test_restored_crlf_blob_is_preserved_with_global_autocrlf(self):
+        (self.root / "tests/check.py").write_bytes(b"assert 2 + 2 == 4\r\n")
+        self.base = self.save()
+        self.approval["snapshot"] = snapshot(self.root, self.base, self.config)
+        git(self.root, "mv", "tests/check.py", "source_check.py")
+        self.save()
+        home = Path(self.temp.name) / "global-git-home"
+        home.mkdir()
+        (home / ".gitconfig").write_text("[core]\n autocrlf = true\n")
+        with patch.dict(
+            os.environ, {"HOME": str(home), "XDG_CONFIG_HOME": str(home / "config")}
+        ):
+            report = self.verify()
+        self.assertFalse(report["passed"])
+        self.assertEqual(report["checks"][0]["status"], "passed")
+
     def test_git_text_crlf_conversion_preserves_approved_harness(self):
         git(self.root, "config", "core.autocrlf", "true")
         path = self.root / "tests/check.py"
@@ -331,6 +347,20 @@ class HarnessTests(RepoCase):
         self.assertEqual(
             blocked_paths(self.root, ["alias.py"], self.config), ["alias.py"]
         )
+
+    def test_alias_root_still_blocks_lexical_and_resolved_test_paths(self):
+        view = Path(self.temp.name) / "project-view"
+        try:
+            view.symlink_to(self.root, target_is_directory=True)
+            (self.root / "alias.py").symlink_to(self.root / "tests/check.py")
+        except OSError:
+            self.skipTest("Symlink creation unavailable")
+        names = [
+            "alias.py",
+            "tests/check.py",
+            str((self.root / "tests/check.py").resolve()),
+        ]
+        self.assertEqual(blocked_paths(view, names, self.config), names)
 
     def test_protected_symlinks_rejected(self):
         path = self.root / "tests/link.py"
@@ -792,6 +822,23 @@ class StateTests(RepoCase):
 
 
 class InstallationTests(unittest.TestCase):
+    def test_install_repeat_uninstall_through_system_style_parent_alias(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            real = root / "real"
+            home = real / "home"
+            home.mkdir(parents=True)
+            alias = root / "alias"
+            try:
+                alias.symlink_to(real, target_is_directory=True)
+            except OSError:
+                self.skipTest("Symlink creation unavailable")
+            install(["codex"], alias / "home")
+            install(["codex"], alias / "home")
+            result = uninstall(alias / "home")
+            self.assertEqual(result["preserved_modified_files"], [])
+            self.assertFalse((home / ".local/share/aek/scripts/aek.py").exists())
+
     def test_malformed_nested_hooks_fail_before_installation(self):
         with tempfile.TemporaryDirectory() as folder:
             home = Path(folder)

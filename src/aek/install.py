@@ -166,8 +166,10 @@ def configure_hooks(path, runtime, adapter, remove=False):
 
 
 def install(adapters, home=None, replace=False, source=None):
-    home = Path(home) if home else Path.home()
-    runtime = data_home(home if home != Path.home() else None)
+    # Normalize OS-level parent aliases (macOS /var -> /private/var) before
+    # rejecting symlinks inside the selected installation destinations.
+    home = (Path(home) if home else Path.home()).resolve()
+    runtime = data_home(home if home != Path.home().resolve() else None)
     manifest_path = runtime.parent / "aek-installation.json"
     manifest = (
         read_json(manifest_path)
@@ -420,8 +422,8 @@ def migrate_legacy(home=None):
 
 
 def uninstall(home=None):
-    home = Path(home) if home else Path.home()
-    runtime = data_home(home if home != Path.home() else None)
+    home = (Path(home) if home else Path.home()).resolve()
+    runtime = data_home(home if home != Path.home().resolve() else None)
     manifest_path = runtime.parent / "aek-installation.json"
     manifest = read_json(manifest_path)
     preserved = []
