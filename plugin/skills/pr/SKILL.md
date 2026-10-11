@@ -1,7 +1,19 @@
 ---
 name: pr
-description: Create, update, or inspect GitHub Pull Requests (PRs). Automates branch verification, pushing to remote, drafting structured PR descriptions, and submitting via GitHub CLI (gh pr create) or GitHub MCP.
+description: Create a reviewable pull request using the project's publishing policy and include current verification evidence.
 ---
+
+# Pull request
+
+In an AEK-enrolled project, publish through `aek ship` after an exact-commit review and independently approved harness verification. Use a separate test-proposal PR for harness authoring. Publishing uses the configured restricted agent identity and opens a draft; do not bypass its checks by calling GitHub directly with human credentials.
+
+In unenrolled projects, follow their existing checks and publishing conventions. Inspect the final diff, include relevant validation and limitations, and create a PR only when publishing is authorized. Keep multiline bodies in a temporary file and pass `--body-file` to `gh`.
+
+Return the created PR link. Do not merge or deploy unless separately requested.
+
+## Retained workflow for unenrolled projects
+
+The following workflow applies only to projects without `.aek/project.json`. It preserves the existing kit behavior; its autonomous-mode shortcuts never grant approval in enrolled projects. Antigravity native artifacts apply when that surface is available; otherwise save a reviewable local plan/report and use the current agent interface.
 
 # /pr — GitHub Pull Request Automation
 

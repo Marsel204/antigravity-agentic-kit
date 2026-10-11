@@ -1,4 +1,8 @@
-*.bak
-*.pyc
 __pycache__/
-.DS_Store
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.venv/
+.ruff_cache/

@@ -1,12 +1,12 @@
 ---
 name: spec
-description: Clarify requirements, impacted modules, edge cases, and hardware/API constraints before planning or coding.
+description: Inspect a project and clarify requirements, architecture constraints, edge cases, and measurable acceptance criteria before planning or implementation.
 ---
 
-# /spec — Specification & Requirements Phase
+# Specification
 
-When invoked, the agent MUST:
-1. Inspect existing code to identify the exact files and modules that will be affected.
-2. Enumerate edge cases, failure states, network/serial timeouts, and boundary conditions.
-3. For edge/embedded systems, verify non-blocking I/O and resource/memory constraints.
-4. Stop and present the specification with any open questions for user review before proceeding.
+Inspect the existing code and configuration first. Load `aek context` when the project is enrolled. Identify affected behavior, interfaces, modules, existing harness coverage, and approved architecture invariants.
+
+Clarify material ambiguities with focused questions that change scope or behavior. Discover repository facts through inspection instead of asking the user. Include concrete expected outcomes, failure modes, performance/hardware constraints when relevant, and acceptance criteria.
+
+Present the specification for review before implementation. Architecture boundary changes need a concrete proposal and human approval. Specifications should support the requested work without imposing unrelated integrations, approval gates, or external actions on unenrolled projects.

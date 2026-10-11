@@ -1,0 +1,114 @@
+name: AEK controller
+on:
+  workflow_run:
+    workflows: [AEK request]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      candidate_pr:
+        required: true
+        type: string
+      proposal_pr:
+        required: true
+        type: string
+permissions:
+  contents: read
+  pull-requests: read
+concurrency:
+  group: aek-controller-${{ github.event.workflow_run.head_branch || github.event.inputs.candidate_pr }}
+  cancel-in-progress: true
+jobs:
+  prepare:
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    environment: aek-authority
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/create-github-app-token@v1
+        id: policy-reader
+        with:
+          app-id: ${{ vars.AEK_CHECK_APP_ID }}
+          private-key: ${{ secrets.AEK_CHECK_PRIVATE_KEY }}
+      - name: Resolve trusted policy and human review
+        env:
+          GH_TOKEN: ${{ steps.policy-reader.outputs.token }}
+          PYTHONPATH: .aek/ci
+        run: python -m aek.ci prepare --event "$GITHUB_EVENT_PATH" --plan "$RUNNER_TEMP/plan.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: aek-plan
+          path: |
+            ${{ runner.temp }}/plan.json
+            ${{ runner.temp }}/plan.bundle
+          retention-days: 7
+  execute:
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+          path: controller
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: aek-plan
+          path: ${{ runner.temp }}/aek-plan
+      - name: Import trusted integration objects
+        run: |
+          git clone --no-checkout "$RUNNER_TEMP/aek-plan/plan.bundle" "$RUNNER_TEMP/candidate"
+          git -C "$RUNNER_TEMP/candidate" fetch "$RUNNER_TEMP/aek-plan/plan.bundle" 'refs/aek/integration:refs/aek/integration'
+      - name: Run candidate checks in isolated containers
+        env:
+          PYTHONPATH: controller/.aek/ci
+        run: python -m aek.ci execute --root "$RUNNER_TEMP/candidate" --plan "$RUNNER_TEMP/aek-plan/plan.json" --report "$RUNNER_TEMP/report.json"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aek-result
+          path: ${{ runner.temp }}/report.json
+          if-no-files-found: warn
+          retention-days: 7
+  publish:
+    if: always() && needs.prepare.result == 'success' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    environment: aek-authority
+    needs: [prepare, execute]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: aek-plan
+          path: ${{ runner.temp }}/aek-plan
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: aek-result
+          path: ${{ runner.temp }}/aek-result
+      - uses: actions/create-github-app-token@v1
+        id: app
+        with:
+          app-id: ${{ vars.AEK_CHECK_APP_ID }}
+          private-key: ${{ secrets.AEK_CHECK_PRIVATE_KEY }}
+      - name: Publish independently sourced result
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          PYTHONPATH: .aek/ci
+          AEK_WORKER_RESULT: ${{ needs.execute.result }}
+        run: python -m aek.ci publish --plan "$RUNNER_TEMP/aek-plan/plan.json" --report "$RUNNER_TEMP/aek-result/report.json" --worker-result "$AEK_WORKER_RESULT"
