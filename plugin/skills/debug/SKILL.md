@@ -84,23 +84,30 @@ You MUST complete each phase before proceeding to the next.
    THEN investigate that specific component
    ```
 
-   **Example (multi-layer system):**
+   **Example (multi-layer system - Bash or PowerShell):**
+   ```powershell
+   # PowerShell example:
+   # Layer 1: Workflow / Environment
+   Write-Host "=== Env variables: ==="
+   Get-ChildItem Env:API_KEY, Env:DATABASE_URL -ErrorAction SilentlyContinue
+
+   # Layer 2: Service / Config
+   Write-Host "=== Config file check: ==="
+   Test-Path config/settings.json
+
+   # Layer 3: Connection endpoint probe
+   Test-NetConnection -ComputerName localhost -Port 5432 -InformationLevel Quiet
+   ```
    ```bash
-   # Layer 1: Workflow
-   echo "=== Secrets available in workflow: ==="
-   echo "IDENTITY: ${IDENTITY:+SET}${IDENTITY:-UNSET}"
+   # Bash example:
+   # Layer 1: Secrets / Env vars
+   env | grep API_KEY || echo "API_KEY not in environment"
 
-   # Layer 2: Build script
-   echo "=== Env vars in build script: ==="
-   env | grep IDENTITY || echo "IDENTITY not in environment"
+   # Layer 2: Config file check
+   test -f config/settings.json && echo "Config exists"
 
-   # Layer 3: Signing script
-   echo "=== Keychain state: ==="
-   security list-keychains
-   security find-identity -v
-
-   # Layer 4: Actual signing
-   codesign --sign "$IDENTITY" --verbose=4 "$APP"
+   # Layer 3: Boundary probe
+   nc -zv 127.0.0.1 5432
    ```
 
    **This reveals:** Which layer fails (secrets → workflow ✓, workflow → build ✗)
