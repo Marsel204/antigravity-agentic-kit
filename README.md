@@ -71,6 +71,20 @@ The installer preserves unrelated settings and refuses unmanaged/modified file c
 
 Validate a live protected-file edit denial in a disposable enrolled project in each agent. `doctor` reports configuration and project prerequisites; it does not certify IDE activation. Shell writes and disabled hooks can bypass local guards. The independent CI gate provides enforcement beyond those guards.
 
+## Initialize a project with the `init` skill
+
+Once skills are installed, use `$init` in Codex or `/init` in Antigravity to carry out project setup:
+
+```text
+Initialize a financial dashboard with React and TypeScript, mock data, and AEK enrollment.
+```
+
+`init` prepares a minimal runnable starter, noninteractive baseline tests, applicable build/type checks, an application smoke check, architecture, and a reviewed enrollment proposal. It preserves existing projects and local agent adaptations. When publishing is authorized, it prepares the initial baseline proposal and freezes it only after the exact human GitHub approval. It reports incomplete activation or enforcement instead of claiming installation establishes protection.
+
+After setup, `spec` defines feature requirements and `plan` defines implementation milestones (`agentic-plan` in a locally adapted Codex installation). Existing accepted specifications and plans are reused. `init` does not implement feature logic or approve future protected changes. Owner GitHub provisioning and human approvals still follow the enrollment process below.
+
+Graphify stays disabled by default. Request its setup explicitly to prepare isolated installation and approved project opt-in; local parsing is the default and semantic extraction requires separate policy approval.
+
 ## 3. Enroll a project
 
 Run this inside the target Git repository with a GitHub `origin`; do not enroll your home directory.
