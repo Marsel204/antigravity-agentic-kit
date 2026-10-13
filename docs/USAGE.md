@@ -2,6 +2,14 @@
 
 Complete [installation](INSTALLATION.md) and [owner enrollment](ENROLLMENT.md) first. The [README](../README.md#4-implement-a-feature) gives the full proposal/freeze/implement/verify/ship walkthrough.
 
+## Project initialization and feature handoff
+
+Use the installed `init` skill for new-project setup or adopting AEK in an existing repository. It prepares the starter and checks, reviewed architecture/enrollment, and initial baseline proposal. It preserves existing implementation and policy; already enrolled repositories are not reinitialized. Missing owner details leave a reviewable draft with explicit prerequisites.
+
+Setup ends at the initial baseline. Use `spec` for feature behavior/acceptance criteria and `plan` for milestones, reusing existing accepted artifacts. Enrolled projects honor exact harness/architecture approvals; unenrolled projects keep their existing workflow without additional AEK approval gates. An implementation request, plan, local flag, or graph index cannot replace required human approval.
+
+Graphify setup is optional and explicitly requested. Installation alone does not enable a project: approve its policy opt-in before refreshing/querying. See [Optional graph](#optional-graph).
+
 ## Before work and after compaction
 
 ```sh
