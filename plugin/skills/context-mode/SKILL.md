@@ -14,6 +14,11 @@ Use context-mode MCP tools (`context-mode/<tool>`) to prevent context rot:
 * `context-mode/ctx_index`: Index a file/directory into the local FTS5 store.
 * `context-mode/ctx_search`: Search indexed codebase knowledge across sessions.
 * `context-mode/ctx_stats`: View context token savings and session metrics.
+* `context-mode/ctx_fetch_and_index`: Fetch remote documentation or web content and index directly.
+* `context-mode/ctx_insight`: Synthesize indexed knowledge into targeted findings.
+* `context-mode/ctx_doctor`: Inspect database health, index statistics, and schema.
+* `context-mode/ctx_upgrade`: Upgrade internal SQLite FTS5 store schema.
+* `context-mode/ctx_purge`: Purge obsolete indexes and temporary caches.
 
 ## Guidelines
 - Never dump raw 1,000+ line logs or full files into the conversation.
