@@ -85,6 +85,19 @@ After setup, `spec` defines feature requirements and `plan` defines implementati
 
 Graphify stays disabled by default. Request its setup explicitly to prepare isolated installation and approved project opt-in; local parsing is the default and semantic extraction requires separate policy approval.
 
+## UI design and redesign
+
+The kit also includes two complementary UI skills:
+
+- **[ui-workflow](skills/ui-workflow/SKILL.md):** brief, supplied or researched references, UI specification, representative prototype, refinement, and verification. Redesigns start with an audit of the current app; focused changes use only the relevant steps. It reuses `spec` and the engineering skills rather than creating a second engineering lifecycle.
+- **[Impeccable](skills/impeccable/SKILL.md):** upstream design guidance, critique, accessibility and responsive audits, typography, layout, and visual refinement. Design critique complements the kit's implementation `review` skill.
+
+Example: `Use ui-workflow with Impeccable to redesign this dashboard. Preserve its existing flows and start with a brief and references.`
+
+Both skills ship through the normal kit installer and generated plugin bundle. Impeccable's portable launcher lives in its skill folder; invoke it through the actual skill base directory. On first use it downloads its pinned engine into `~/.impeccable/bin/` and verifies the release checksum. This needs network access; an existing engine can be supplied with `IMPECCABLE_BIN`. No extra design hooks are installed by bundling the skill. See its [source revision and license notes](skills/impeccable/UPSTREAM.md).
+
+UI work follows the project's existing approval, implementation, and verification requirements. Animation, parallel agents, and deployment are optional; installing these skills does not authorize those actions.
+
 ## 3. Enroll a project
 
 Run this inside the target Git repository with a GitHub `origin`; do not enroll your home directory.
@@ -261,8 +274,8 @@ python -m build --wheel
 
 Windows: use `.\.venv\Scripts\Activate.ps1` or its `python.exe` directly. Install npm, Go, and Rust/Cargo for all runner fixtures; set `AEK_REQUIRE_PROFILES=1` to fail instead of skipping missing runtimes.
 
-Canonical skills live in `skills/`; `python scripts/sync_bundle.py` generates plugin copies. Lifecycle, debug, diagramming, context, and formatting skills share this repository. Separate Codex/Antigravity repositories are unnecessary.
+Canonical skills live in `skills/`; `python scripts/sync_bundle.py` generates plugin copies. Lifecycle, UI design, debug, diagramming, context, and formatting skills share this repository. Separate Codex/Antigravity repositories are unnecessary.
 
 The configured matrix covers Linux/macOS/Windows on Python 3.11/3.13. Linux implementation validation ran 100 tests: 99 passed; one native-Windows junction case skipped. Native platform, live IDE/container, and owner-provisioned GitHub enforcement validation remain prerequisites before adopting the kit in real projects.
 
-MIT © Marselinus Nugraha
+MIT © Marselinus Nugraha. Vendored Impeccable content retains its Apache-2.0 license and third-party notices; see [UPSTREAM.md](skills/impeccable/UPSTREAM.md).

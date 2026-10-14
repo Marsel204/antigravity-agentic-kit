@@ -822,6 +822,41 @@ class StateTests(RepoCase):
 
 
 class InstallationTests(unittest.TestCase):
+    @unittest.skipIf(os.name == "nt", "POSIX executable permissions")
+    def test_ui_skills_install_with_working_impeccable_launcher(self):
+        from aek.install import SOURCE
+
+        with tempfile.TemporaryDirectory() as folder:
+            home = Path(folder) / "home"
+            engine = Path(folder) / "fixture-engine"
+            engine.write_text(
+                '#!/bin/sh\n[ "$1" = engine-probe ] || exit 1\n'
+                'echo "impeccable-engine fixture"\n'
+            )
+            engine.chmod(0o755)
+            install(["codex", "antigravity"], home)
+            for directory in [
+                home / ".agents/skills",
+                home / ".gemini/config/skills",
+                home / ".local/share/aek/skills",
+            ]:
+                with self.subTest(directory=directory):
+                    self.assertEqual(
+                        (directory / "ui-workflow/SKILL.md").read_bytes(),
+                        (SOURCE / "skills/ui-workflow/SKILL.md").read_bytes(),
+                    )
+                    self.assertTrue(
+                        (directory / "ui-workflow/references/design-artifacts.md").is_file()
+                    )
+                    self.assertTrue((directory / "impeccable/reference/critique.md").is_file())
+                    self.assertTrue((directory / "impeccable/LICENSE").is_file())
+                    with patch.dict(os.environ, {"IMPECCABLE_BIN": str(engine)}):
+                        result = run([
+                            directory / "impeccable/scripts/impeccable",
+                            "engine-probe",
+                        ])
+                    self.assertEqual(result.stdout.strip(), b"impeccable-engine fixture")
+
     def test_install_repeat_uninstall_through_system_style_parent_alias(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)

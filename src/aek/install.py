@@ -296,7 +296,11 @@ def install(adapters, home=None, replace=False, source=None):
                     str(path), str(backup / relative)
                 )
         atomic_write(path, content)
-        if path.name in ["aek", "aek.py"] or path.suffix == ".sh":
+        if (
+            path.name in ["aek", "aek.py"]
+            or path.suffix == ".sh"
+            or content.startswith(b"#!")
+        ):
             path.chmod(path.stat().st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
         manifest["files"][str(path)] = {
             "digest": __import__("hashlib").sha256(content).hexdigest()

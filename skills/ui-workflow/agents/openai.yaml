@@ -1,0 +1,4 @@
+interface:
+  display_name: "UI Workflow"
+  short_description: "Design new UIs and redesign existing apps"
+  default_prompt: "Use $ui-workflow to design or redesign this UI, starting with the brief and relevant references."
