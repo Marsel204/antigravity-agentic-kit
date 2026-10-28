@@ -276,6 +276,6 @@ Windows: use `.\.venv\Scripts\Activate.ps1` or its `python.exe` directly. Instal
 
 Canonical skills live in `skills/`; `python scripts/sync_bundle.py` generates plugin copies. Lifecycle, UI design, debug, diagramming, context, and formatting skills share this repository. Separate Codex/Antigravity repositories are unnecessary.
 
-The configured matrix covers Linux/macOS/Windows on Python 3.11/3.13. Linux implementation validation ran 100 tests: 99 passed; one native-Windows junction case skipped. Native platform, live IDE/container, and owner-provisioned GitHub enforcement validation remain prerequisites before adopting the kit in real projects.
+The configured matrix covers Linux/macOS/Windows on Python 3.11/3.13. Linux implementation validation passed the available tests; the native-Windows junction case and Go-dependent check were skipped because their prerequisites were unavailable. Native platform, live IDE/container, and owner-provisioned GitHub enforcement validation remain prerequisites before adopting the kit in real projects.
 
 MIT © Marselinus Nugraha. Vendored Impeccable content retains its Apache-2.0 license and third-party notices; see [UPSTREAM.md](skills/impeccable/UPSTREAM.md).
