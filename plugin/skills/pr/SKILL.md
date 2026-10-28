@@ -7,48 +7,32 @@ description: Create a reviewable pull request using the project's publishing pol
 
 In an AEK-enrolled project, publish through `aek ship` after an exact-commit review and independently approved harness verification. Use a separate test-proposal PR for harness authoring. Publishing uses the configured restricted agent identity and opens a draft; do not bypass its checks by calling GitHub directly with human credentials.
 
-In unenrolled projects, follow their existing checks and publishing conventions. Inspect the final diff, include relevant validation and limitations, and create a PR only when publishing is authorized. Keep multiline bodies in a temporary file and pass `--body-file` to `gh`.
-
 Return the created PR link. Do not merge or deploy unless separately requested.
 
-## Retained workflow for unenrolled projects
+## Unenrolled projects
 
-The following workflow applies only to projects without `.aek/project.json`. It preserves the existing kit behavior; its autonomous-mode shortcuts never grant approval in enrolled projects. Antigravity native artifacts apply when that surface is available; otherwise save a reviewable local plan/report and use the current agent interface.
+Publish only when publishing is authorized. Follow project conventions and disclose the absence of AEK enforcement. Use `verify` for required checks and review the exact implementation before publishing; unresolved failures or missing required evidence prevent shipping.
 
-# /pr — GitHub Pull Request Automation
+Inspect `git status`, the full diff, and the staged diff. Stage explicit intended paths and commit only the intended changes; never automatically stage unrelated or untracked files. If on the default branch, create a descriptive feature branch before committing. Use a Conventional Commit message.
 
-Use this skill to automate opening production-ready GitHub Pull Requests.
+Check `git remote -v` and `gh auth status`. With a GitHub remote and authenticated `gh`, push with `git push -u origin <branch>`. Write the PR body to a temporary file and use `gh pr create --draft --title "<title>" --body-file <tmpfile>`. Draft is the default unless the user or project convention requests ready status. Never pass a multiline body through `--body`.
 
-## Execution Steps
+If there is no GitHub remote or `gh` is unavailable or unauthenticated, provide the drafted title/body and exact branch, commit, push, and PR commands for the remaining steps instead of claiming publication.
 
-1. **Branch Verification:** Check current branch (`git branch --show-current`).
-   * If on `main` or `master`, create and switch to a descriptive branch:
-     `git checkout -b <type>/<short-description>` (e.g., `feat/emergency-vehicle-preemption`, `fix/serial-timeout`).
-2. **Commit Uncommitted Work:** If uncommitted changes exist, stage and commit them using Conventional Commits (`feat: ...`, `fix: ...`, `refactor: ...`).
-3. **Push to Remote:**
-   * Verify remote exists (`git remote -v`). If origin exists, push: `git push -u origin <branch>`.
-4. **Author Structured PR Description:**
-   * **Title:** Concise `<type>(<scope>): <summary>` (e.g., `feat(atsc): add emergency vehicle preemption detection`).
-   * **Body Format:**
-     ```markdown
-     ## Summary
-     Brief 2-3 sentence overview of why this change is needed and what it accomplishes.
+Use this PR body structure:
 
-     ## Changes
-     - Detailed list of modified modules and new capabilities.
+```markdown
+## Summary
+Explain the problem and resulting behavior.
 
-     ## Verification & Testing
-     - Test runner executed (`pytest`, `npm test`, etc.) with output status.
-     - Confirmation of zero regressions.
+## Changes
+- Describe the intended changes.
 
-     ## Checklist
-     - [x] Unit/Integration tests passing
-     - [x] Non-blocking I/O & safety constraints verified
-     - [x] Documentation & types updated
-     ```
-5. **Submit via GitHub CLI or Fallback:**
-   * **If `gh` CLI is available and authenticated (`gh auth status` passes):**
-     Execute `gh pr create --title "<title>" --body "<body>"` (or use GitHub MCP).
-     Display the clickable PR link: `[PR #X](https://github.com/...)`.
-   * **Fallback (No remote / unauthenticated `gh`):**
-     Write the drafted PR title and body to an artifact markdown file in `<appDataDir>/brain/<conversation-id>/` with instructions for manual PR submission.
+## Verification
+- Record exact commands and results actually observed.
+
+## Limitations
+- State unresolved constraints or missing validation, or say none observed.
+```
+
+Tick checklist boxes only for evidence actually observed. Return the PR link when created. Merging and deployment require separate user requests.

@@ -1,12 +1,18 @@
 ---
 name: verify
-description: Full test suite verification, regression check, and release gating (alias for /ship phase).
+description: Verify the current implementation with the project's required checks before review or shipping.
 ---
 
-# /verify — Full Suite Verification & Release Gate
+# Verification
 
-When invoked, the agent MUST:
-1. **Full Test Suite Run:** Execute the complete test runner (`pytest`, `npm test`, `cargo test`, etc.) across all project modules.
-2. **Zero Regressions Check:** Verify all existing and new tests pass cleanly with zero regression.
-3. **Artifact / Metrics:** For algorithmic or performance-critical tasks, record latency, memory, or throughput benchmarks.
-4. **Transition to Ship:** If committing or opening a PR, proceed to the `/ship` or `/pr` skill checklist.
+Verify the current implementation before review or shipping. Missing, skipped, timed-out, or stale required checks are not success. Never weaken or skip checks to obtain a green result.
+
+## AEK-enrolled projects
+
+For projects with `.aek/project.json`, load `aek context` and run `aek verify` against the current implementation and approved frozen harness. Preserve the exact human GitHub approval and architecture boundaries. `aek verify --offline` is for local diagnostics only; it cannot authorize shipping or satisfy independent CI.
+
+## Unenrolled projects
+
+Run the project's full test suite and applicable build, type, and lint checks. Report exact commands and observed results, including failures, skips, and limitations. Record benchmarks only when performance is in scope. Do not claim AEK enforcement.
+
+Verification does not authorize committing, publishing, or merging. Hand off to `review`, then `ship` or `pr` only when requested.

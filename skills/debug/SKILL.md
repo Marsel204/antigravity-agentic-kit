@@ -1,6 +1,6 @@
 ---
 name: debug
-description: Gold-standard systematic debugging protocol from obra/superpowers. Activate on /debug or /systematic-debugging, test failures, crashes, exceptions, or unexpected behavior before proposing fixes. Enforces root-cause investigation, backward data flow tracing, and hypothesis testing.
+description: Gold-standard systematic debugging protocol from obra/superpowers. Activate on /debug, systematic debugging requests, test failures, crashes, exceptions, or unexpected behavior before proposing fixes. Enforces root-cause investigation, backward data flow tracing, and hypothesis testing.
 ---
 
 # Systematic Debugging
@@ -174,6 +174,8 @@ You MUST complete each phase before proceeding to the next.
 
 ### Phase 4: Implementation
 
+**AEK-enrolled projects:** A new reproduction test follows the `test` proposal workflow: `aek harness workspace` → propose → exact human GitHub approval → freeze. An already-failing approved test is already the red evidence. Never edit frozen harness files to make a fix pass.
+
 **Fix the root cause, not the symptom:**
 
 1. **Create Failing Test Case**
@@ -214,7 +216,7 @@ You MUST complete each phase before proceeding to the next.
    - Are we "sticking with it through sheer inertia"?
    - Should we refactor architecture vs. continue fixing symptoms?
 
-   **Discuss with your human partner before attempting more fixes**
+   **Discuss with the user before attempting more fixes**
 
    This is NOT a failed hypothesis - this is a wrong architecture.
 
@@ -237,7 +239,7 @@ If you catch yourself thinking:
 
 **If 3+ fixes failed:** Question the architecture (see Phase 4.5)
 
-## your human partner's Signals You're Doing It Wrong
+## Signals From the User That You're Off Track
 
 **Watch for these redirections:**
 - "Is that not happening?" - You assumed without verifying

@@ -14,3 +14,7 @@ Use `aek graph query` only when Graphify is enabled and its worktree index is fr
 Run configured checks with `aek verify`. Offline verification is a local diagnostic using cached references; it cannot satisfy independent CI approval. Never repair failing checks by skipping them or weakening their runner.
 
 Keep parallel work sequential unless explicitly requested. When requested, use separate worktrees and declare ownership of shared interfaces before workers start.
+
+## Unenrolled projects
+
+Implement the agreed scope against existing or new tests using the project's conventions. Keep diffs minimal and avoid unrelated refactors. Run the project's checks and report their results; do not claim AEK harness protection.

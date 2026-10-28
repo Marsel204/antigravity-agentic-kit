@@ -1,36 +1,41 @@
 ---
 name: flowchart
-description: Create clean, verified flowcharts and process diagrams. Generates both inline GitHub-flavored Mermaid flowcharts and interactive Archify workflow diagrams for logic branching, algorithms, decision trees, and user flows. Supports direct export to draw.io and JPG/PNG/SVG.
+description: Create process and logic flowcharts as inline Mermaid diagrams, with saved Mermaid and draw.io sources when requested. Route interactive, architecture, and image/video export work to archify when installed.
 ---
 
-# /flowchart — Process & Logic Flowcharts
+# Flowcharts
 
-Use this skill whenever you need to map out execution flow, algorithms, state transitions, or decision trees.
+Map process steps, decisions, algorithms, and user flows with clear labels and labeled decision branches. Default to one inline Mermaid block in chat: that block is the visual. Do not print the same diagram twice.
 
-## 1. Worktree-Aware File Placement
+Use `([Start / End])` for boundaries, `[/Input or Output/]` for I/O, `[Action]` for processes, `{"Decision?"}` for decisions, and `[(Storage)]` for stored data. Check node identifiers, edge targets, branch labels, and syntax before presenting the diagram.
 
-When asked to generate or save a flowchart, the agent MUST place files into the **current active worktree / repository**:
-* **Target Directory:** `./docs/diagrams/` relative to the current working directory (`pwd`).
-* **Files Generated:**
-  1. `<name>.drawio` — Native draw.io XML file, directly openable in draw.io without copy-pasting.
-  2. `<name>.mmd` — Plain text Mermaid source code stored cleanly on disk.
-* **Why:** In Git worktrees (`wt`), saving to `./docs/diagrams/` ensures the diagram stays strictly isolated on that feature branch, ready to be committed and reviewed in your Pull Request (`/pr`) without polluting other worktrees.
+## Saved diagrams
 
-## 2. In-Chat Output Standards
+Write files only when the user asks to save/export or the task is repository documentation. Save Mermaid source in `docs/diagrams/<name>.mmd` in the active repository/worktree. When draw.io is wanted, also create `docs/diagrams/<name>.drawio` and return clickable file links.
 
-The agent MUST keep chat output clean and uncluttered:
-1. The **Visual Mermaid diagram** rendered directly in the response for instant visual review.
-2. The **Clickable file link** to the generated `./docs/diagrams/<name>.drawio` file.
-* **Note:** Do NOT print duplicate raw text code blocks in the chat response. The user opens the `.drawio` file directly.
+Use valid uncompressed draw.io XML. Extend this minimal skeleton with the actual nodes, geometry, labels, and connections; check that every edge endpoint exists:
 
-## 3. Standard Node Shapes
-* `([Start / End])` — Pill shapes for boundaries.
-* `[/ Input or Output /]` — Parallelograms for reading/writing variables or sensor data.
-* `[Process / Action]` — Rectangles for computational steps.
-* `{"Decision ?"}` — Rhombus/diamond for conditional branching.
-* `[(Database / Storage)]` — Cylinders for storage.
-* `-->|Yes / No|` — Labeled transition edges.
+```xml
+<mxfile host="app.diagrams.net">
+  <diagram id="flow" name="Flow">
+    <mxGraphModel>
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="step" value="Start" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge" value="Next" style="endArrow=classic;" edge="1" parent="1" source="step">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="240" y="70" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
+```
 
-## 4. Exporting to draw.io and JPG
-* **Open in draw.io:** Simply open `./docs/diagrams/<name>.drawio` directly (File → Open From → Device).
-* **JPG Export:** Inside draw.io, click **File → Export as → JPEG**.
+## Other diagram formats
+
+For interactive HTML diagrams, architecture diagrams, or PNG/SVG/WebM export, use the `archify` skill when installed. If unavailable, provide Mermaid or draw.io source and explain the export limitation without claiming an export was generated.

@@ -13,14 +13,10 @@ Resolve material scope or design choices before presenting the plan. Honor an al
 
 Do not assume authorization to publish, merge, deploy, or launch parallel agents merely because those actions are available in the toolkit.
 
-## Retained workflow for unenrolled projects
+## Unenrolled projects
 
-The following workflow applies only to projects without `.aek/project.json`. It preserves the existing kit behavior; its autonomous-mode shortcuts never grant approval in enrolled projects. Antigravity native artifacts apply when that surface is available; otherwise save a reviewable local plan/report and use the current agent interface.
+Define reviewable milestones with acceptance criteria, dependency order, and rollback procedures using the project's conventions. Include red-green TDD, minimal implementation diffs, self-audit of resource leaks, input validation and concurrency, and a full-suite run through `verify`.
 
-# /plan — Implementation Planning Phase
+If the user asked only for a plan, deliver it. If implementation is already authorized, explain the approach and continue without asking for the same approval again. Resolve material missing decisions while continuing independent work. Do not infer additional authorization from slash commands or claim AEK protection.
 
-When invoked, the agent MUST:
-1. **Milestone Decomposition:** Break down the task into discrete, independent milestones (1–3 files per milestone).
-2. **Acceptance Criteria & Rollback:** Define clear pass/fail verification criteria and a rollback procedure for each milestone.
-3. **Native Antigravity Artifact:** Write the plan as a markdown artifact in `<appDataDir>/brain/<conversation-id>/` using `write_to_file` with `ArtifactMetadata: { RequestFeedback: true, UserFacing: true, Summary: "..." }`. This renders the interactive **"Proceed"** button in the Antigravity UI.
-4. **Scope and authorization:** If the user requested only a plan, deliver the plan. If implementation is already authorized, explain the approach and continue without a redundant approval pause. Ask only for missing decisions that materially affect scope or correctness; progress on independent work while waiting. These unenrolled-project rules do not grant approval in AEK-enrolled projects.
+If the host offers a native plan or review artifact (for example, Antigravity `write_to_file` with RequestFeedback), use it; otherwise present the plan in chat or save local Markdown when persistence helps.

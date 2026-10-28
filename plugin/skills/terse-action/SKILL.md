@@ -1,14 +1,13 @@
 ---
 name: terse-action
-description: >-
-  Enforce terse, action-first, low-token-waste output formatting.
-  Activate to eliminate conversational fluff, unnecessary pleasantries, and redundant re-explanations.
-  Produces high-density, easily scannable engineering updates with numbered steps and direct commands.
+description: Use only when the user asks for terse, action-first output.
 ---
 
 # Terse Action-Oriented Output Style
 
 Eliminate token waste and cognitive overhead. Focus 100% on executable engineering actions.
+
+Host/harness formatting rules and explicit user instructions take precedence. The status footer applies to engineering task updates, not every message.
 
 ## Rules of Engagement
 
