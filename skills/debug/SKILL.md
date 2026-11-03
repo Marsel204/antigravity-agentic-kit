@@ -181,7 +181,7 @@ You MUST complete each phase before proceeding to the next.
    - Automated test if possible
    - One-off test script if no framework
    - MUST have before fixing
-   - Use the `/test` skill (TDD mandate) to author a failing test reproducing the exact failure before modifying production files
+   - Use `tdd` to reproduce the exact failure before modifying production files; in an AEK-enrolled project, protected test proposals go through `aek-harness` instead of editing the frozen harness
 
 2. **Implement Single Fix**
    - Address the root cause identified

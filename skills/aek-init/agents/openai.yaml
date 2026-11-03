@@ -1,0 +1,4 @@
+interface:
+  display_name: "AEK Init"
+  short_description: "Prepare AEK setup and initial enrollment"
+  default_prompt: "Use $aek-init for this project, preserving its existing authorization and AEK approval requirements."

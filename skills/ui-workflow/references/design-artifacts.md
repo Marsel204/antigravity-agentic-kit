@@ -44,7 +44,7 @@ Summarize the selected direction and the design decisions it supports. List unre
 
 ## UI specification checklist
 
-Pass these findings into the existing `spec` workflow when available. This checklist supplements its engineering requirements.
+Pass these findings into the existing `to-spec` workflow when available. This checklist supplements its engineering requirements.
 
 - **Scope and behavior:** requested surfaces, exclusions, appearance changes, behavior changes, and preserved flows.
 - **Screens and navigation:** routes, information hierarchy, primary actions, entry/exit points, and back navigation.

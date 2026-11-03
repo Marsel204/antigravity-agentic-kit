@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "agentic-engineering-kit"
-version = "0.1.0"
-description = "Approved harnesses and evidence-based workflows for coding agents"
+version = "0.2.0"
+description = "Composable engineering skills and optional approved-harness controls"
 requires-python = ">=3.11"
 dependencies = []
 

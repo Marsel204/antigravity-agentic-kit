@@ -41,7 +41,7 @@ Borrow structure and principles; adapt to the product. Do not import another pro
 
 Translate the brief and references into layout principles, hierarchy, typography, palette, spacing, component treatment, and interaction intent. Respect an existing design system unless changing it is in scope. There is no default aesthetic or required motion style.
 
-Reuse the available `spec` skill to formalize requirements; do not maintain a second general specification workflow. Supply the UI-specific findings and checklist in [design-artifacts.md](references/design-artifacts.md). If `spec` is unavailable, produce the same UI requirements directly without claiming it ran.
+Reuse the available `to-spec` skill to formalize requirements; do not maintain a second general specification workflow. Supply the UI-specific findings and checklist in [design-artifacts.md](references/design-artifacts.md). If `to-spec` is unavailable, produce the same UI requirements directly without claiming it ran.
 
 Define screens, flows, components, states, responsive behavior, accessibility requirements, and observable acceptance criteria. Separate appearance from behavior changes and identify any architecture impact. Resolve consequential choices before broad implementation. Keep the specification current as exploration changes the design.
 
@@ -55,7 +55,7 @@ Use separate branches or worktrees when isolation helps. Parallel agents require
 
 ## 5. Refine and implement
 
-Use `plan`, `build`, or `engineering-lifecycle` when available and appropriate to the change. Reuse the chosen direction and UI specification as their inputs. Follow declared project requirements even when those skills are unavailable.
+Use native planning or `to-tickets` for larger work, then `implement` when appropriate. Enrolled projects additionally use `aek-workflow`. Reuse the chosen direction and UI specification as their inputs. Follow declared project requirements even when those skills are unavailable.
 
 - Establish shared tokens and components, then apply them across the requested screens. Reuse existing implementations where practical.
 - Iterate on hierarchy, readability, typography, spacing, color, density, copy, consistency, and interaction feedback. Inspect the rendered result instead of relying only on source.
@@ -67,9 +67,9 @@ Use `plan`, `build`, or `engineering-lifecycle` when available and appropriate t
 
 Verify against the UI acceptance criteria and repository checks. Inspect representative desktop and mobile views, long content, important states, keyboard operation, focus, contrast, and key flows. Test behavior when code changes warrant it; do not add tests merely to mirror styling values.
 
-Use available `verify` and `review` skills when appropriate. For AEK projects, run declared checks with `aek verify` and follow their review requirements. Impeccable can critique design quality; it does not replace implementation review for correctness, requirement coverage, architecture, security, or regressions. A small styling change may need visual verification and focused self-review only. Disclose self-review and any unverified behavior.
+Run the project's checks and use `code-review` when appropriate. For AEK projects, run declared checks with `aek verify` and follow their review requirements. Impeccable can critique design quality; it does not replace implementation review for correctness, requirement coverage, architecture, security, or regressions. A small styling change may need visual verification and focused self-review only. Disclose self-review and any unverified behavior.
 
-Deliver the implemented result with a concise account of changes, verification, and material limitations. Include useful screenshots, previews, or artifact links when available. Publishing is separate from UI completion: use `ship`/`aek ship` for authorized draft-PR delivery where applicable, and deploy only when the user requests it. Respect the user's existing authorization; do not repeatedly ask for it.
+Deliver the implemented result with a concise account of changes, verification, and material limitations. Include useful screenshots, previews, or artifact links when available. Publishing is separate from UI completion: use the project's publishing tooling, or `aek-ship`/`aek ship` for authorized draft-PR delivery where applicable, and deploy only when the user requests it. Respect the user's existing authorization; do not repeatedly ask for it.
 
 ## Typical paths
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "AEK Ship"
+  short_description: "Publish verified AEK work through draft PRs"
+  default_prompt: "Use $aek-ship for this project, preserving its existing authorization and AEK approval requirements."

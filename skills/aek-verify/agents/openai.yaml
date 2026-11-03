@@ -1,0 +1,4 @@
+interface:
+  display_name: "AEK Verify"
+  short_description: "Verify AEK code and record exact-commit review"
+  default_prompt: "Use $aek-verify for this project, preserving its existing authorization and AEK approval requirements."

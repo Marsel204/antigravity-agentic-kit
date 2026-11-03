@@ -1,0 +1,4 @@
+interface:
+  display_name: "AEK Harness"
+  short_description: "Propose and freeze protected AEK harnesses"
+  default_prompt: "Use $aek-harness for this project, preserving its existing authorization and AEK approval requirements."
