@@ -969,7 +969,7 @@ class InstallationTests(unittest.TestCase):
     def test_unmanaged_skill_preserved_until_explicit_replace(self):
         with tempfile.TemporaryDirectory() as folder:
             home = Path(folder)
-            skill = home / ".agents/skills/build/SKILL.md"
+            skill = home / ".agents/skills/implement/SKILL.md"
             skill.parent.mkdir(parents=True)
             skill.write_text("custom skill")
             with self.assertRaises(Error):
@@ -983,7 +983,7 @@ class InstallationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             home = Path(folder)
             install(["codex"], home)
-            skill = home / ".agents/skills/build/SKILL.md"
+            skill = home / ".agents/skills/implement/SKILL.md"
             skill.write_text("local edit")
             result = uninstall(home)
             self.assertEqual(skill.read_text(), "local edit")
@@ -994,9 +994,9 @@ class InstallationTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as folder:
             home = Path(folder)
-            skill = home / ".agents/skills/build/SKILL.md"
+            skill = home / ".agents/skills/implement/SKILL.md"
             skill.parent.mkdir(parents=True)
-            original = (SOURCE / "skills/build/SKILL.md").read_bytes()
+            original = (SOURCE / "skills/implement/SKILL.md").read_bytes()
             skill.write_bytes(original)
             install(["codex"], home)
             uninstall(home)

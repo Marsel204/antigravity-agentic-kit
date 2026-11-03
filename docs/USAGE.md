@@ -1,14 +1,18 @@
 # Everyday usage
 
-Complete [installation](INSTALLATION.md) and [owner enrollment](ENROLLMENT.md) first. The [README](../README.md#4-implement-a-feature) gives the full proposal/freeze/implement/verify/ship walkthrough.
+Install the kit using [Installation](INSTALLATION.md). Existing installations should follow the [composable skills migration](SKILL_MIGRATION.md).
 
-## Project initialization and feature handoff
+## Everyday work
 
-Use the installed `init` skill for new-project setup or adopting AEK in an existing repository. It prepares the starter and checks, reviewed architecture/enrollment, and initial baseline proposal. It preserves existing implementation and policy; already enrolled repositories are not reinitialized. Missing owner details leave a reviewable draft with explicit prerequisites.
+Choose individual skills: `grill-with-docs` for requested exploration, `to-spec` for the agreed requirements, native planning or `to-tickets` for decomposition, `tdd`/`implement` for development, `code-review` for feedback, and `pr` for PR descriptions. Use existing project checks and publishing conventions. `debug` and the specialist skills remain available. Optional `setup-matt-pocock-skills` records tracker/domain-document preferences; absent configuration does not block local work.
 
-Setup ends at the initial baseline. Use `spec` for feature behavior/acceptance criteria and `plan` for milestones, reusing existing accepted artifacts. Enrolled projects honor exact harness/architecture approvals; unenrolled projects keep their existing workflow without additional AEK approval gates. An implementation request, plan, local flag, or graph index cannot replace required human approval.
+## Optional AEK enrollment and feature handoff
 
-Graphify setup is optional and explicitly requested. Installation alone does not enable a project: approve its policy opt-in before refreshing/querying. See [Optional graph](#optional-graph).
+Use `aek-init` for AEK setup/enrollment and initial baseline proposals. It preserves existing implementation and policy; already enrolled repositories are not reinitialized. Missing owner details leave a reviewable draft with explicit prerequisites. Setup ends at the initial baseline; feature requirements and plans reuse `to-spec`, native planning, or `to-tickets`.
+
+The remaining sections apply to **AEK-enrolled repositories**. Complete [owner enrollment](ENROLLMENT.md) before claiming enforcement. Use `aek-workflow` to coordinate the exact harness/architecture approvals, `aek-harness` to prepare protected proposals, `aek-verify` for committed checks/review records, and `aek-ship` for restricted draft delivery. An implementation request, plan, local flag, or graph index cannot replace required human approval.
+
+Graphify remains optional and explicitly requested. Installation alone does not enable a project: approve its policy opt-in before refreshing/querying. See [Optional graph](#optional-graph).
 
 ## Before work and after compaction
 

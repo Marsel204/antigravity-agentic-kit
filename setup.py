@@ -11,6 +11,8 @@ class Build(build_py):
         super().run()
         root = Path(__file__).parent
         bundle = Path(self.build_lib) / "aek" / "bundle"
+        if bundle.exists():
+            shutil.rmtree(bundle)
         for name in ["src", "scripts", "skills", "templates"]:
             shutil.copytree(
                 root / name,

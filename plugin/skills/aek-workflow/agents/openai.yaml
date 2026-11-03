@@ -1,0 +1,4 @@
+interface:
+  display_name: "AEK Workflow"
+  short_description: "Work within an approved AEK project harness"
+  default_prompt: "Use $aek-workflow for this project, preserving its existing authorization and AEK approval requirements."

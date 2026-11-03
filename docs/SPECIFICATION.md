@@ -2,7 +2,9 @@
 
 One shared, Python 3.11+ core supports Codex and Antigravity, with Linux/macOS/native-Windows launchers. Tools and skills install globally; Git protection requires explicit repository enrollment. Existing settings/hooks are preserved, colliding files require explicit replacement and backup, and plugin skills are generated from canonical `skills/` sources.
 
-The lifecycle is **Spec → Plan → Test proposal → Human approval → Frozen harness → Implementation → Verification → Review → Draft PR**. Each protected change requires human approval of its exact snapshot, including fixtures, helpers, runner configuration, and architecture documents. Test authoring happens in a dedicated clone; implementation clones/worktrees remain locked. An intentional `ALLOW_TEST_EDITS=1` commit is not approval.
+Everyday work uses a pinned, locally adapted subset of Matt Pocock's composable skills; no universal phase wrapper is installed. Optional `aek-*` skills retain the enrollment-specific controls. Explicit skill migration archives known retired AEK skills with recovery maps and leaves unrelated or symlinked skills intact. Source skills and generated plugin skills have the same files; stale generated copies must fail bundle validation.
+
+For AEK-enrolled repositories, the lifecycle is **Spec → Plan → Test proposal → Human approval → Frozen harness → Implementation → Verification → Review → Draft PR**. Each protected change requires human approval of its exact snapshot, including fixtures, helpers, runner configuration, and architecture documents. Test authoring happens in a dedicated clone; implementation clones/worktrees remain locked. An intentional `ALLOW_TEST_EDITS=1` commit is not approval.
 
 Approval is a GitHub APPROVE review by an allowlisted numeric human ID. Its body identifies the exact commit, baseline, and digest. Proposal PRs remain open until feature merge. Bot reviews, dismissed reviews, stale snapshots, changed target harnesses, implementation changes in test proposals, security identity changes, and narrowing protected patterns are rejected. Commands/rules may change only in a new exactly approved proposal.
 

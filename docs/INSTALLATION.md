@@ -28,7 +28,7 @@ In a dedicated virtual environment:
 
 ```sh
 python3 -m venv /path/to/aek-env
-/path/to/aek-env/bin/python -m pip install /path/to/agentic_engineering_kit-0.1.0-py3-none-any.whl
+/path/to/aek-env/bin/python -m pip install /path/to/agentic_engineering_kit-0.2.0-py3-none-any.whl
 /path/to/aek-env/bin/aek install --agent both
 ```
 
@@ -52,6 +52,16 @@ Codex non-managed hooks require review/trust through `/hooks` in the CLI; change
 Reload Antigravity and verify that its version loads the installed definitions. Test real edit-tool denial in a disposable enrolled fixture in each app. Hook JSON existing on disk is not evidence of activation. AEK retains independent CI because local hooks can be bypassed.
 
 Installation is repeatable and preserves unrelated configuration. Unmanaged or locally modified collisions fail before replacement. Review them; `--replace` permits backed-up replacement. The installation manifest and timestamped backups live alongside the runtime. Do not delete backups until satisfied with the update. `--home /temporary/home` is available for isolated installation experiments.
+
+## Upgrade the old workflow skill layout
+
+Use the new checkout's source launcher, which understands `--migrate-skills` even when the installed CLI is older:
+
+```sh
+python3 scripts/aek.py update --agent both --migrate-skills
+```
+
+PowerShell uses `py -3` instead of `python3`. Choose `codex` or `antigravity` for a single integration. The flag archives known retired AEK skills and older Codex aliases, preserves unrelated skills, and returns backup/recovery paths. New installations use the ordinary `install` command. See [the migration guide](SKILL_MIGRATION.md) for exact mappings, local adaptations, collision handling, and recovery.
 
 ## Clone an already enrolled project
 

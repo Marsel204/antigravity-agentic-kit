@@ -1,54 +1,173 @@
 ---
 name: pr
-description: Create a reviewable pull request using the project's publishing policy and include current verification evidence.
+description: "Use when writing a PR body."
+metadata:
+  source-repository: https://github.com/mattpocock/skills
+  source-commit: 4ae2317ddb22b046e26455e4f9c9b3aaaf62212d
+  source-path: skills/engineering/pr
+  credits:
+    skill: show-me
+    author: Dex Horthy
+    organisation: Humanlayer
+    url: "https://github.com/humanlayer/skills/blob/main/plugins/show-me/skills/show-me/SKILL.md"
 ---
 
-# Pull request
+Use this template for writing the PR body:
 
-In an AEK-enrolled project, publish through `aek ship` after an exact-commit review and independently approved harness verification. Use a separate test-proposal PR for harness authoring. Publishing uses the configured restricted agent identity and opens a draft; do not bypass its checks by calling GitHub directly with human credentials.
+```markdown
+## Summary
 
-In unenrolled projects, follow their existing checks and publishing conventions. Inspect the final diff, include relevant validation and limitations, and create a PR only when publishing is authorized. Keep multiline bodies in a temporary file and pass `--body-file` to `gh`.
+<diagram, diff-sketch, or tree>
 
-Return the created PR link. Do not merge or deploy unless separately requested.
+## Evidence
 
-## Retained workflow for unenrolled projects
+- **Before:** <screenshot/output/failing test run>
+  **After:** <screenshot/output/passing test run>
 
-The following workflow applies only to projects without `.aek/project.json`. It preserves the existing kit behavior; its autonomous-mode shortcuts never grant approval in enrolled projects. Antigravity native artifacts apply when that surface is available; otherwise save a reviewable local plan/report and use the current agent interface.
+## Merge Danger
 
-# /pr — GitHub Pull Request Automation
+**Door:** <one-way or two-way>
 
-Use this skill to automate opening production-ready GitHub Pull Requests.
+<optional: description>
 
-## Execution Steps
+**Blast Radius:** <one-word description>
 
-1. **Branch Verification:** Check current branch (`git branch --show-current`).
-   * If on `main` or `master`, create and switch to a descriptive branch:
-     `git checkout -b <type>/<short-description>` (e.g., `feat/emergency-vehicle-preemption`, `fix/serial-timeout`).
-2. **Commit Uncommitted Work:** If uncommitted changes exist, stage and commit them using Conventional Commits (`feat: ...`, `fix: ...`, `refactor: ...`).
-3. **Push to Remote:**
-   * Verify remote exists (`git remote -v`). If origin exists, push: `git push -u origin <branch>`.
-4. **Author Structured PR Description:**
-   * **Title:** Concise `<type>(<scope>): <summary>` (e.g., `feat(atsc): add emergency vehicle preemption detection`).
-   * **Body Format:**
-     ```markdown
-     ## Summary
-     Brief 2-3 sentence overview of why this change is needed and what it accomplishes.
+<optional: potential ramifications of merge>
+```
 
-     ## Changes
-     - Detailed list of modified modules and new capabilities.
+## Sections
 
-     ## Verification & Testing
-     - Test runner executed (`pytest`, `npm test`, etc.) with output status.
-     - Confirmation of zero regressions.
+Skip all preambles and keep prose brief. Use the user's domain language from `GLOSSARY.md`.
 
-     ## Checklist
-     - [x] Unit/Integration tests passing
-     - [x] Non-blocking I/O & safety constraints verified
-     - [x] Documentation & types updated
-     ```
-5. **Submit via GitHub CLI or Fallback:**
-   * **If `gh` CLI is available and authenticated (`gh auth status` passes):**
-     Execute `gh pr create --title "<title>" --body "<body>"` (or use GitHub MCP).
-     Display the clickable PR link: `[PR #X](https://github.com/...)`.
-   * **Fallback (No remote / unauthenticated `gh`):**
-     Write the drafted PR title and body to an artifact markdown file in `<appDataDir>/brain/<conversation-id>/` with instructions for manual PR submission.
+### Summary
+
+Pick the smallest view that makes the key point clear.
+
+- Show logic or an algorithm as pseudocode:
+
+```text
+on(save)
+  if content is unchanged
+    return cached result
+  write new content
+  return fresh result
+```
+
+- Show runtime control flow as a call tree:
+
+```text
+submitForm
+  createSession
+    persistPrompt
+    launchAgent
+  navigateToSession
+```
+
+- Show UI structure as a component tree, including state and module boundaries that matter:
+
+```text
+<SessionPage> (apps/example/src/routes/session.tsx)
+  useSessionEvents()
+  <SessionToolbar>
+    <RunSkillButton> (packages/ui)
+```
+
+- Show file responsibility or a broad refactor as a shallow file tree:
+
+```text
+src/
+├── commands/       # parses user actions
+├── sessions/       # owns session state
+└── transport/      # sends API requests
+```
+
+- Show component interaction, control flow, or data flow with Mermaid:
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant UI
+    participant Daemon
+    User->>UI: choose command
+    UI->>Daemon: send expanded prompt
+    Daemon-->>UI: stream result
+```
+
+- Use `diff` when the point is what changes and the surrounding shape already exists. Match the diff shape to the topic.
+
+For a component change:
+
+```diff
+ <SessionPage>
+   useSessionEvents()
+   <SessionToolbar>
++    <RunSkillButton />
+   <SessionTimeline>
++    <SkillResultCard />
+```
+
+For a file-layout change:
+
+```diff
+ src/
+ ├── commands/
++│   └── show-me.ts       # expands the slash command
+ ├── sessions/
+-└── transport.ts
++└── transport/
++    ├── client.ts
++    └── stream.ts
+```
+
+For a call-tree or call-stack change:
+
+```diff
+ submitForm
+   createSession
+     persistPrompt
++    expandSkillMention
+     launchAgent
+-  navigateToSession
++  navigateToSession
++    subscribeToEvents
+```
+
+For a state or control-flow change:
+
+```diff
+ on(save)
+-  write content
++  if content is unchanged
++    return cached result
++  write new content
++  invalidate cache
+```
+
+- Show the whole block when most of it is new, when omitted context would hide ownership or order, or when the user needs a copyable target shape:
+
+```ts
+function expandSkill(command: string): string {
+  const skillName = command.slice(1);
+  return `use the ${skillName} skill`;
+}
+```
+
+#### Guidance
+
+Place each visual next to the short text it supports. Keep only the calls, files, props, states, and boundaries needed to answer the user's current question or the options to resolve the current discussion point.
+
+You may use one of these, you may use several, it is unlikely you will use all of them. Use your judgement and don't overwhelm the user.
+
+### Evidence
+
+Concrete evidence that the change works. Show a before and after.
+
+Screenshots are S-tier - when the environment is set up for it and the change is visual.
+
+Execution-based evidence is A-tier. Test results, console output. Show the exact test that now fails and passes, using pseudocode.
+
+### Merge Danger
+
+Describe whether it's a one-way or two-way door. You can walk back through two-way doors, but not one-way doors. A PR that is cheap to roll back is lower risk. Changes that involve destructive actions or hard-to-reverse decisions are one-way doors.
+
+The blast radius is the potential impact or scope of the changes introduced by this PR. Consider all possibilities. Examples are layout shift, breakages for consumers, mobile responsiveness, etc.

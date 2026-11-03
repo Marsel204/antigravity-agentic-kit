@@ -165,7 +165,9 @@ def configure_hooks(path, runtime, adapter, remove=False):
     write_json(path, data)
 
 
-def install(adapters, home=None, replace=False, source=None):
+def install(adapters, home=None, replace=False, source=None, migrate_skills=False):
+    from .skill_migration import plan as plan_skills, archive as archive_skills
+
     # Normalize OS-level parent aliases (macOS /var -> /private/var) before
     # rejecting symlinks inside the selected installation destinations.
     home = (Path(home) if home else Path.home()).resolve()
@@ -186,6 +188,7 @@ def install(adapters, home=None, replace=False, source=None):
         raise Error(
             "Run update --source PATH with a freshly checked-out kit, or use its source launcher."
         )
+    migration = plan_skills(home, runtime, adapters, manifest, migrate_skills)
     targets = {}
     shared = []
     instruction_updates = {}
@@ -271,17 +274,19 @@ def install(adapters, home=None, replace=False, source=None):
         if path.exists() and path.read_bytes() != content:
             old_digest = manifest["files"].get(str(path), {}).get("digest")
             current = __import__("hashlib").sha256(path.read_bytes()).hexdigest()
-            if old_digest != current and not replace:
+            migrating_pr = any(path.is_relative_to(p) for p in migration.replaceable)
+            if old_digest != current and not replace and not migrating_pr:
                 raise Error(
                     f"Preserving modified/unmanaged file: {path}. Use --replace to back it up and replace."
                 )
     backup = runtime.parent / ("aek-backups-" + str(time.time_ns()))
+    skill_migration = archive_skills(migration, backup, manifest)
+    file_backups = {}
     for path, content in instruction_updates.items():
         backup.mkdir(parents=True, exist_ok=True)
-        atomic_write(
-            backup / (__import__("hashlib").sha256(str(path).encode()).hexdigest()),
-            content,
-        )
+        destination = backup / __import__("hashlib").sha256(str(path).encode()).hexdigest()
+        atomic_write(destination, content)
+        file_backups[str(path)] = str(destination)
     for path, content in targets.items():
         if path in shared:
             continue
@@ -291,6 +296,7 @@ def install(adapters, home=None, replace=False, source=None):
             relative = __import__("hashlib").sha256(str(path).encode()).hexdigest()
             backup.mkdir(parents=True, exist_ok=True)
             shutil.copy2(path, backup / relative)
+            file_backups[str(path)] = str(backup / relative)
             if str(path) not in manifest["files"]:
                 manifest.setdefault("backups", {}).setdefault(
                     str(path), str(backup / relative)
@@ -305,6 +311,8 @@ def install(adapters, home=None, replace=False, source=None):
         manifest["files"][str(path)] = {
             "digest": __import__("hashlib").sha256(content).hexdigest()
         }
+    if file_backups:
+        write_json(backup / "file-backups.json", file_backups)
     for adapter in adapters:
         path = (
             home / ".codex" / "hooks.json"
@@ -330,6 +338,8 @@ def install(adapters, home=None, replace=False, source=None):
         "bin": str(bin_dir),
         "adapters": adapters,
         "projects_enrolled": 0,
+        "skill_migration": skill_migration,
+        "backup": str(backup) if backup.exists() else None,
         "codex_hooks": "configured; review and trust using /hooks",
         "antigravity_hooks": "configured; reload and validate in Antigravity",
         "path_setup": f"Add {bin_dir} to PATH if it is not already present.",

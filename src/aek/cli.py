@@ -116,6 +116,11 @@ def parser():
             action="store_true",
             help="Explicitly replace the older standalone global Harness Lock with enrollment-only protection",
         )
+        command.add_argument(
+            "--migrate-skills",
+            action="store_true",
+            help="Archive retired AEK workflow skills and install the composable replacements",
+        )
     command = sub.add_parser("uninstall")
     command.add_argument("--home", type=Path)
     command = sub.add_parser("init")
@@ -187,7 +192,10 @@ def dispatch(args):
         if args.action == "uninstall":
             return uninstall(args.home)
         adapters = ["codex", "antigravity"] if args.agent == "both" else [args.agent]
-        result = install(adapters, args.home, args.replace, args.source)
+        result = install(
+            adapters, args.home, args.replace, args.source,
+            migrate_skills=args.migrate_skills,
+        )
         if args.migrate_legacy:
             result["legacy_migration"] = migrate_legacy(args.home)
         return result

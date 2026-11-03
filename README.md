@@ -1,8 +1,8 @@
 # Antigravity Agentic Engineering Kit
 
-One engineering toolkit for **Codex and Google Antigravity**, with a shared Python core and separate agent adapters. Install it once per device, then enroll each project explicitly.
+Composable engineering and design skills for **Codex and Google Antigravity**, with a shared Python core for optional AEK enforcement. Install once per device and use the skills immediately. Enroll only the repositories that need approved-harness controls.
 
-**Spec → Plan → Test proposal → Human approval → Frozen harness → Implementation → Verification → Review → Draft PR**
+For enrolled repositories: **Spec → Plan → Test proposal → Human approval → Frozen harness → Implementation → Verification → Review → Draft PR**.
 
 AEK protects approved tests, fixtures, helpers, runner configuration, and architecture decisions. Local hooks catch accidental edits; independently controlled GitHub CI verifies the approved harness and current integration result. Installation alone does not approve tests or establish enforcement.
 
@@ -11,6 +11,7 @@ AEK protects approved tests, fixtures, helpers, runner configuration, and archit
 | Task | Guide |
 |---|---|
 | Install, activate, update, or uninstall | [Installation](docs/INSTALLATION.md) |
+| Replace the old workflow skills across machines | [Skill migration](docs/SKILL_MIGRATION.md) |
 | Enroll a project and configure GitHub authority | [Enrollment](docs/ENROLLMENT.md) |
 | Configure runners, protected paths, and modules | [Configuration](docs/CONFIGURATION.md) |
 | Implement features and use optional modules | [Usage](docs/USAGE.md) |
@@ -71,26 +72,37 @@ The installer preserves unrelated settings and refuses unmanaged/modified file c
 
 Validate a live protected-file edit denial in a disposable enrolled project in each agent. `doctor` reports configuration and project prerequisites; it does not certify IDE activation. Shell writes and disabled hooks can bypass local guards. The independent CI gate provides enforcement beyond those guards.
 
-## Initialize a project with the `init` skill
+## Everyday engineering skills
 
-Once skills are installed, use `$init` in Codex or `/init` in Antigravity to carry out project setup:
+Use the skills individually, in proportion to the work:
 
-```text
-Initialize a financial dashboard with React and TypeScript, mock data, and AEK enrollment.
+- `grill-with-docs` explores requirements and records useful domain decisions when an interview is requested.
+- `to-spec` captures the agreed behavior; native planning or `to-tickets` breaks down larger work.
+- `tdd` and `implement` develop behavior in small test/implementation cycles.
+- `code-review` checks repository standards and the agreed specification; `pr` writes the PR body.
+
+These are selected, locally adapted [Matt Pocock skills](https://github.com/mattpocock/skills), pinned and bundled with their dependencies, references, and MIT licenses. Setup is optional: specs and tickets can stay in local Markdown. Research/review are sequential unless delegation is requested, and previously accepted decisions do not require repeat approval. The existing `debug`, design, diagram, and context skills remain available.
+
+**Upgrading an existing machine:** use the new checkout's source launcher:
+
+```sh
+python3 scripts/aek.py update --agent both --migrate-skills
 ```
 
-`init` prepares a minimal runnable starter, noninteractive baseline tests, applicable build/type checks, an application smoke check, architecture, and a reviewed enrollment proposal. It preserves existing projects and local agent adaptations. When publishing is authorized, it prepares the initial baseline proposal and freezes it only after the exact human GitHub approval. It reports incomplete activation or enforcement instead of claiming installation establishes protection.
+This archives retired AEK workflow skills and known older Codex aliases, installs the replacements, and reports backups and preserved custom skills. Use the applicable agent instead of `both` when needed. Read [migration, mappings, and recovery](docs/SKILL_MIGRATION.md) before rollout. There is no mandatory spec/plan/test-proposal lifecycle for unenrolled projects.
 
-After setup, `spec` defines feature requirements and `plan` defines implementation milestones (`agentic-plan` in a locally adapted Codex installation). Existing accepted specifications and plans are reused. `init` does not implement feature logic or approve future protected changes. Owner GitHub provisioning and human approvals still follow the enrollment process below.
+## Optional AEK project setup
 
-Graphify stays disabled by default. Request its setup explicitly to prepare isolated installation and approved project opt-in; local parsing is the default and semantic extraction requires separate policy approval.
+Use `$aek-init` in Codex or `/aek-init` in Antigravity when AEK enrollment is wanted. It prepares a starter or adopts an existing project, configures checks, and prepares the initial enrollment/baseline proposal. Existing accepted requirements and plans are reused. Ordinary project setup does not require AEK enrollment.
+
+For repositories with `.aek/project.json`, `aek-workflow` preserves the approved harness and architecture, `aek-harness` prepares protected proposals, `aek-verify` verifies committed code and records review, and `aek-ship` publishes through the restricted identity. Exact human approvals and independent CI remain required. The enrollment walkthrough below applies only to those projects.
 
 ## UI design and redesign
 
 The kit also includes two complementary UI skills:
 
-- **[ui-workflow](skills/ui-workflow/SKILL.md):** brief, supplied or researched references, UI specification, representative prototype, refinement, and verification. Redesigns start with an audit of the current app; focused changes use only the relevant steps. It reuses `spec` and the engineering skills rather than creating a second engineering lifecycle.
-- **[Impeccable](skills/impeccable/SKILL.md):** upstream design guidance, critique, accessibility and responsive audits, typography, layout, and visual refinement. Design critique complements the kit's implementation `review` skill.
+- **[ui-workflow](skills/ui-workflow/SKILL.md):** brief, supplied or researched references, UI specification, representative prototype, refinement, and verification. Redesigns start with an audit of the current app; focused changes use only the relevant steps. It reuses `to-spec`, native planning, and `implement` rather than creating a second engineering lifecycle.
+- **[Impeccable](skills/impeccable/SKILL.md):** upstream design guidance, critique, accessibility and responsive audits, typography, layout, and visual refinement. Design critique complements the kit's implementation `code-review` skill.
 
 Example: `Use ui-workflow with Impeccable to redesign this dashboard. Preserve its existing flows and start with a brief and references.`
 
